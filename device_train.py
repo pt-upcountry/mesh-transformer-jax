@@ -20,6 +20,7 @@ from google.cloud.exceptions import NotFound
 
 from mesh_transformer.util import clip_by_global_norm, additive_weight_decay
 
+import sys
 import datetime
 
 def parse_args():
@@ -138,6 +139,8 @@ if __name__ == "__main__":
     args = parse_args()
     params = json.load(open(args.config))
 
+    sys.setrecursionlimit(1500)
+    
     gradient_accumulation_steps = params.get("gradient_accumulation_steps", 1)
     per_replica_batch = params["per_replica_batch"]
     cores_per_replica = params["cores_per_replica"]
