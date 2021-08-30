@@ -139,7 +139,7 @@ if __name__ == "__main__":
     args = parse_args()
     params = json.load(open(args.config))
 
-    sys.setrecursionlimit(1500)
+    sys.setrecursionlimit(200000)
     
     gradient_accumulation_steps = params.get("gradient_accumulation_steps", 1)
     per_replica_batch = params["per_replica_batch"]
@@ -282,7 +282,7 @@ if __name__ == "__main__":
 
         print('compiling train fn')
         start = time.time()
-        print("Starting at " + str(start))
+        print("Starting at " + str(datetime.datetime.now()))
         loss, last_loss, grad_norm, grad_norm_micro = train_step(
             network, train_dataset.get_samples()
         )
