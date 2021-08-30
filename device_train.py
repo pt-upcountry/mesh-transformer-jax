@@ -20,6 +20,7 @@ from google.cloud.exceptions import NotFound
 
 from mesh_transformer.util import clip_by_global_norm, additive_weight_decay
 
+import datetime
 
 def parse_args():
     # Parse command line arguments
@@ -259,15 +260,16 @@ if __name__ == "__main__":
         network = CausalTransformer(params)
 
         if initial_ckpt_state_path:
-            print("loading network")
+            print("loading network at " + datetime.datetime.now())
             if fine_tuning:
                 # get the scheduler step stored in the just-initialized optimizer
                 # should be zero
                 init_sched_state = network.state["opt_state"][-1]
 
             start = time.time()
+            print("Starting at " + datetime.datetime.now())
             network.state = read_ckpt(network.state, initial_ckpt_state_path, devices.shape[1], load_opt=(not args.fresh_opt))
-
+            
             if fine_tuning:
                 # overwrite the loaded scheduler step with zeros
                 # this makes fine-tuning use the lr schedule in
@@ -277,6 +279,7 @@ if __name__ == "__main__":
 
         print('compiling train fn')
         start = time.time()
+        print("Starting at " + str(start))
         loss, last_loss, grad_norm, grad_norm_micro = train_step(
             network, train_dataset.get_samples()
         )
