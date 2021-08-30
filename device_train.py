@@ -263,14 +263,14 @@ if __name__ == "__main__":
         network = CausalTransformer(params)
 
         if initial_ckpt_state_path:
-            print("loading network at " + datetime.datetime.now())
+            print("loading network at " + str(datetime.datetime.now()))
             if fine_tuning:
                 # get the scheduler step stored in the just-initialized optimizer
                 # should be zero
                 init_sched_state = network.state["opt_state"][-1]
 
             start = time.time()
-            print("Starting at " + datetime.datetime.now())
+            print("Starting at " + str(datetime.datetime.now()))
             network.state = read_ckpt(network.state, initial_ckpt_state_path, devices.shape[1], load_opt=(not args.fresh_opt))
             
             if fine_tuning:
